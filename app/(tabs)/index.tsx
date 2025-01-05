@@ -1,29 +1,38 @@
 import { StyleSheet, Text, FlatList, ActivityIndicator } from "react-native";
 import { View } from "@/components/Themed";
-import { useEffect, useState } from "react";
 import { getTopRatedMovies } from "@/api/movies";
+import { useQuery } from "@tanstack/react-query";
 
 export default function HomeScreen() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    data: movies,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["movies"],
+    queryFn: getTopRatedMovies,
+  });
 
-  useEffect(() => {
-    // * IIFE - Immediately Invoked Function Expression
-    (async () => {
-      setIsLoading(true);
-      setError(null);
+  // const [movies, setMovies] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-      try {
-        const movies = await getTopRatedMovies();
-        setMovies(movies);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   // * IIFE - Immediately Invoked Function Expression
+  //   (async () => {
+  //     setIsLoading(true);
+  //     setError(null);
+
+  //     try {
+  //       const movies = await getTopRatedMovies();
+  //       setMovies(movies);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setError(error);
+  //       setIsLoading(false);
+  //     }
+  //   })();
+  // }, []);
 
   if (isLoading) {
     return <ActivityIndicator />;
