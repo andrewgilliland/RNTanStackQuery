@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, Pressable } from "react-native";
+import { Link } from "expo-router";
 import { Movie } from "@/app/(tabs)";
 
 type MovieListItemProps = {
@@ -8,13 +9,16 @@ type MovieListItemProps = {
 
 const MovieListItem: FC<MovieListItemProps> = ({ movie }) => {
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-        style={styles.image}
-      />
-      <Text style={styles.title}>{movie.title}</Text>
-    </View>
+    <Link href={`/${movie.id}`} asChild>
+      <Pressable style={styles.container}>
+        <Image
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          }}
+          style={styles.image}
+        />
+      </Pressable>
+    </Link>
   );
 };
 
@@ -26,9 +30,6 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 3 / 5,
     borderRadius: 4,
-  },
-  title: {
-    color: "white",
   },
 });
 

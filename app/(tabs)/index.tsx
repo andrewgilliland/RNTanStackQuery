@@ -3,8 +3,10 @@ import { View } from "@/components/Themed";
 import { getTopRatedMovies } from "@/api/movies";
 import { useQuery } from "@tanstack/react-query";
 import MovieListItem from "@/components/MovieListItem";
+import { LinearGradient } from "expo-linear-gradient";
 
 export type Movie = {
+  id: number;
   title: string;
   poster_path: string;
 };
@@ -29,13 +31,15 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <FlatList<Movie>
-        contentContainerStyle={styles.flatList}
-        columnWrapperStyle={styles.flatList}
-        data={movies ?? []}
-        numColumns={2}
-        renderItem={({ item }) => <MovieListItem movie={item} />}
-      />
+      <LinearGradient colors={["#6b21a8", "black"]} style={{ flex: 1 }}>
+        <FlatList<Movie>
+          contentContainerStyle={styles.flatListContainer}
+          columnWrapperStyle={styles.flatListColumnWrapper}
+          data={movies ?? []}
+          numColumns={2}
+          renderItem={({ item }) => <MovieListItem movie={item} />}
+        />
+      </LinearGradient>
     </View>
   );
 }
@@ -44,8 +48,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  flatList: {
-    gap: 8,
+  flatListContainer: {
+    gap: 24,
+    paddingHorizontal: 24,
+  },
+  flatListColumnWrapper: {
+    gap: 24,
   },
   text: {
     color: "white",
