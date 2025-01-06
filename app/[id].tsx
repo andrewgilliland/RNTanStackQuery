@@ -1,10 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Image,
+  Pressable,
+} from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Movie } from "./(tabs)";
 import { getMovieDetails } from "@/api/movies";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome } from "@expo/vector-icons";
+import { addMovieToWatchlist } from "@/api/watchlist";
 
 const MovieDetailsScreen = () => {
   const { id } = useLocalSearchParams();
@@ -16,6 +25,10 @@ const MovieDetailsScreen = () => {
   } = useQuery<Movie>({
     queryKey: ["movies", id],
     queryFn: () => getMovieDetails(Number(id)),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: () => addMovieToWatchlist(Number(id)),
   });
 
   if (isLoading) {
@@ -36,8 +49,21 @@ const MovieDetailsScreen = () => {
           }}
           style={styles.image}
         />
-        <View style={{ padding: 24 }}>
-          <Text style={styles.title}>{movie?.title}</Text>
+        <View style={styles.textContainer}>
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>{movie?.title}</Text>
+            <Pressable
+              onPress={() => {
+                console.log("mutate");
+                mutate();
+              }}
+              style={({ pressed }) => ({
+                transform: [{ scale: pressed ? 0.9 : 1 }],
+              })}
+            >
+              <FontAwesome name="bookmark-o" color="white" size={32} />
+            </Pressable>
+          </View>
           <Text style={styles.overview}>{movie?.overview}</Text>
         </View>
       </View>
@@ -56,13 +82,21 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 300,
   },
+  textContainer: {
+    padding: 24,
+  },
+  titleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   title: {
     color: "white",
     fontSize: 24,
     fontWeight: "bold",
   },
   overview: {
-    marginTop: 12,
+    marginTop: 18,
     color: "#a3a3a3",
     fontSize: 16,
     fontWeight: "medium",
