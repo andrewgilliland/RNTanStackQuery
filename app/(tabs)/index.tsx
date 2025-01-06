@@ -4,11 +4,14 @@ import { getTopRatedMovies } from "@/api/movies";
 import { useQuery } from "@tanstack/react-query";
 import MovieListItem from "@/components/MovieListItem";
 import { LinearGradient } from "expo-linear-gradient";
+import { Stack } from "expo-router";
 
 export type Movie = {
   id: number;
   title: string;
   poster_path: string;
+  backdrop_path: string;
+  overview: string;
 };
 
 export default function HomeScreen() {
@@ -31,6 +34,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ title: "Top Rated Movies" }} />
       <LinearGradient colors={["#6b21a8", "black"]} style={{ flex: 1 }}>
         <FlatList<Movie>
           contentContainerStyle={styles.flatListContainer}

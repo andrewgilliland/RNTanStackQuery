@@ -56,6 +56,9 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+
+  // * React Query Devtools Plugin
+  // * https://docs.expo.dev/debugging/devtools-plugins/#react-query
   useReactQueryDevTools(client);
 
   return (
