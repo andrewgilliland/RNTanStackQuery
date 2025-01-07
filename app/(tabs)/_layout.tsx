@@ -1,5 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -9,10 +10,10 @@ import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  name: React.ComponentProps<typeof MaterialIcons>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialIcons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -31,7 +32,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Movies",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="movie" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -52,7 +53,9 @@ export default function TabLayout() {
         name="two"
         options={{
           title: "Watchlist",
-          tabBarIcon: ({ color }) => <TabBarIcon name="eye" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="movie-filter" color={color} />
+          ),
         }}
       />
     </Tabs>

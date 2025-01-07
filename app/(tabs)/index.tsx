@@ -34,7 +34,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Top Rated Movies" }} />
+      <Stack.Screen options={{ title: "Top Rated" }} />
       <LinearGradient colors={["#6b21a8", "black"]} style={{ flex: 1 }}>
         <FlatList<Movie>
           contentContainerStyle={styles.flatListContainer}
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     gap: 24,
     paddingHorizontal: 24,
+    paddingVertical: 24,
   },
   flatListColumnWrapper: {
     gap: 24,

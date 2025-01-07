@@ -53,10 +53,7 @@ const MovieDetailsScreen = () => {
           <View style={styles.titleRow}>
             <Text style={styles.title}>{movie?.title}</Text>
             <Pressable
-              onPress={() => {
-                console.log("mutate");
-                mutate();
-              }}
+              onPress={() => mutate()}
               style={({ pressed }) => ({
                 transform: [{ scale: pressed ? 0.9 : 1 }],
               })}
