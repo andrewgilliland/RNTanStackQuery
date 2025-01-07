@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Movie } from "./(tabs)";
 import { getMovieDetails } from "@/api/movies";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,6 +17,7 @@ import { addMovieToWatchlist } from "@/api/watchlist";
 
 const MovieDetailsScreen = () => {
   const { id } = useLocalSearchParams();
+  const client = useQueryClient();
 
   const {
     data: movie,
@@ -29,6 +30,9 @@ const MovieDetailsScreen = () => {
 
   const { mutate } = useMutation({
     mutationFn: () => addMovieToWatchlist(Number(id)),
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ["watchlist"] });
+    },
   });
 
   if (isLoading) {
