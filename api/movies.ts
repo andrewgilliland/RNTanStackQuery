@@ -3,9 +3,8 @@ const headers = {
   Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
 };
 
-export const getTopRatedMovies = async () => {
-  const url =
-    "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
+export const getTopRatedMovies = async (page: number = 1) => {
+  const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`;
   const options = {
     method: "GET",
     headers,

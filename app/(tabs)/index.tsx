@@ -1,7 +1,7 @@
 import { StyleSheet, Text, FlatList, ActivityIndicator } from "react-native";
 import { View } from "@/components/Themed";
 import { getTopRatedMovies } from "@/api/movies";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import MovieListItem from "@/components/MovieListItem";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack } from "expo-router";
@@ -19,9 +19,12 @@ export default function HomeScreen() {
     data: movies,
     isLoading,
     error,
-  } = useQuery<Movie[]>({
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: ["movies"],
-    queryFn: getTopRatedMovies,
+    queryFn: ({ pageParam }) => getTopRatedMovies(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => pages.length + 1,
   });
 
   if (isLoading) {
@@ -39,9 +42,12 @@ export default function HomeScreen() {
         <FlatList<Movie>
           contentContainerStyle={styles.flatListContainer}
           columnWrapperStyle={styles.flatListColumnWrapper}
-          data={movies ?? []}
+          data={movies?.pages.flat() ?? []}
           numColumns={2}
           renderItem={({ item }) => <MovieListItem movie={item} />}
+          onEndReached={() => {
+            fetchNextPage();
+          }}
         />
       </LinearGradient>
     </View>
